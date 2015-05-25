@@ -1,0 +1,48 @@
+auth:
+  image: akiel/lens-auth:latest
+  environment:
+  - CONTEXT_PATH=/auth
+  - JVM_OPTS=-Xmx256m
+warehousedbvol:
+  image: akiel/lens-warehouse:latest-db-data
+warehousedb:
+  image: akiel/datomic-free:latest
+  volumes_from:
+  - warehousedbvol
+  environment:
+  - ALT_HOST=db
+warehouse:
+  image: akiel/lens-warehouse:latest
+  links:
+  - warehousedb:db
+  environment:
+  - CONTEXT_PATH=/wh
+  - JVM_OPTS=-Xmx512m
+workbookdbvol:
+  image: akiel/lens-workbook:latest-db-data
+workbookdb:
+  image: akiel/lens-workbook:latest-db
+  volumes_from:
+  - workbookdbvol
+  environment:
+  - ALT_HOST=db
+workbook:
+  image: akiel/lens-workbook:latest
+  links:
+  - workbookdb:db
+  - auth
+  environment:
+  - CONTEXT_PATH=/wb
+  - JVM_OPTS=-Xmx512m
+app:
+  image: akiel/lens-app:latest
+  ports:
+  - "8080:80"
+  links:
+  - warehouse
+  - workbook
+  - auth
+  environment:
+  - WAREHOUSE_HOST=warehouse
+  - WORKBOOK_HOST=workbook
+  - AUTH_HOST=auth
