@@ -56,6 +56,12 @@ but there is no data to be queried.
 
 There will be deployments with sample data very soon.
 
+## License
+
+Copyright © 2015 Alexander Kiel
+
+Distributed under the Eclipse Public License, the same as Clojure.
+
 [1]: <https://github.com/alexanderkiel/lens-app>
 [2]: <https://github.com/alexanderkiel/lens-warehouse>
 [3]: <https://github.com/alexanderkiel/lens-workbook>
